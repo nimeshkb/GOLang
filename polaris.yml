@@ -1,0 +1,42 @@
+version: "1"
+project:
+  name: Nimesh/GOLangX
+  branch: milvus-master
+  revision:
+    name: milvus-master
+    date: "2021-06-29T12:53:08Z"
+capture:
+  build:
+    buildCommands:
+    - shell: [make, -f, Makefile]
+  fileSystem:
+    ears:
+      extensions: [ear]
+      files:
+      - directory: ${project.projectDir}
+    java:
+      files:
+      - directory: ${project.projectDir}
+    javascript:
+      files:
+      - directory: ${project.projectDir}
+      - excludeRegex: node_modules|bower_components|vendor
+    php:
+      files:
+      - directory: ${project.projectDir}
+    python:
+      files:
+      - directory: ${project.projectDir}
+    ruby:
+      files:
+      - directory: ${project.projectDir}
+    wars:
+      extensions: [war]
+      files:
+      - directory: ${project.projectDir}
+analyze:
+  mode: central
+install:
+  coverity:
+    version: default
+serverUrl: https://ikea.polaris.synopsys.com
