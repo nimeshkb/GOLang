@@ -1,0 +1,42 @@
+name: Polaris_GO_scan
+
+on: [push]
+
+jobs:
+  Job_1:
+
+    runs-on: ubuntu-latest
+
+    steps:
+          
+    - name: Checkout Code
+      uses: actions/checkout@v2  
+    
+    - name: Setup Env
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    
+    - uses: actions/setup-go@v1
+      with:
+        go-version: '1.13'
+    
+    - name: Download Polaris
+      uses: carlosperate/download-file-action@v1.0.3
+      with:
+        file-url: 'https://ikea.polaris.synopsys.com/api/tools/polaris_cli-linux64.zip'
+        file-name: 'polaris_cli-linux64.zip'
+    
+    - name: Unzip Polaris zip file
+      run: | 
+           unzip polaris_cli-linux64.zip -d ./polaris_cli
+    
+    - name: Run Polaris Scan
+      env:
+        POLARIS_ACCESS_TOKEN: ${{secrets.POLARIS_TOKEN}}
+        POLARIS_SERVER_URL: https://ikea.polaris.synopsys.com
+      run: |
+           export PATH=$PATH:$(pwd)/polaris_cli/$(ls ./polaris_cli)/bin
+           # <groupname_reponame> is name of your project in Polaris
+           polaris capture
+           polaris analyze -w
